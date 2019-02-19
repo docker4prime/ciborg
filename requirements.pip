@@ -1,0 +1,32 @@
+# PURPOSE: python module dependencies for this project
+# USAGE: pip install -r requirements.pip
+
+# -- ansible
+ansible
+
+# -- modules required for fact caching
+redis
+
+# -- modules required by aws cloud modules
+boto
+boto3
+
+# -- modules required for dig lookup
+dnspython
+
+# -- modules required by digital ocean cloud modules
+dopy
+
+# -- modules required by docker cloud modules
+docker
+
+# -- modules required by proxmox api
+proxmoxer
+
+# -- modules required by vmware cloud modules
+pyvmomi
+
+# -- other modules that may be useful
+passlib>=1.6
+
+# eof

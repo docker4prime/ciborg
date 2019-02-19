@@ -1,0 +1,44 @@
+#!/bin/bash
+# download terraform by hashicorp from official website
+# - variables set here can be overriden through build/environment variables
+toolname="terraform"
+
+# exit on error(s)
+set -e
+
+# -- base download url
+[[ -z "$TERRAFORM_BASEURL" ]] && TERRAFORM_BASEURL="https://releases.hashicorp.com/terraform"
+
+# -- version to be downloaded
+[[ -z "$TERRAFORM_VERSION" ]] && TERRAFORM_VERSION="latest"
+
+# -- how to get available versions
+versions_available=$(curl -s "$TERRAFORM_BASEURL/" | grep "terraform_" | grep -vE "(alpha|beta)" | sed "s/.*>\([^<]*\)<.*/\1/" | sort -t '.' -k 1,1 -k 2,2 -k 3,3 -k 4,4 -g)
+
+# -- how to get latest available version
+versions_latest=$(tail -1 <<<"$versions_available" | awk -F '_' '{print $2}')
+
+# -- compute version to download
+[[ "$TERRAFORM_VERSION" == "latest" ]] && TERRAFORM_VERSION=$versions_latest
+
+
+# -- compute download url
+[[ "$(uname -m)" == "x86_64" ]] && download_url_suffix="linux_amd64" || download_url_suffix="linux_386"
+if [[ -n "$download_url_suffix" ]];then
+  download_url="${TERRAFORM_BASEURL}/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${download_url_suffix}.zip"
+fi
+
+
+# -- download & install to venv bin location
+[[ -n "${APP_PATH}" ]] && target_dir="${APP_PATH}/bin" || target_dir="."
+if [[ -n "${download_url}" ]];then
+  echo "[${toolname}] DOWNLOADING from ${download_url} ..."
+  tmppath=/tmp/download.zip
+  curl -s "${download_url}" -o ${tmppath} && unzip -d ${target_dir}/ ${tmppath} && rm ${tmppath}
+  [[ -x ${target_dir}/terraform ]] || chmod +x ${target_dir}/terraform
+  echo -n "[${toolname}] TESTING current version ... "
+  ${target_dir}/terraform version
+fi
+
+
+# eof

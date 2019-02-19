@@ -2,7 +2,7 @@
 
 # check file existence
 file:
-  /opt/tools/bin/activate:
+  /opt/ciborg/bin/activate:
     exists: true
     filetype: file
 

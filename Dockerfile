@@ -1,4 +1,4 @@
-# docker file for ansible base tools
+# docker file for ciborg tools
 # escape=`
 
 
@@ -9,8 +9,8 @@
 FROM alpine AS buildcontainer
 
 # args: application settings
-ARG APP_NAME="tools"
-ARG APP_PATH="/opt/tools"
+ARG APP_NAME="ciborg"
+ARG APP_PATH="/opt/ciborg"
 ARG TMP_PATH="/opt/build"
 
 # args: core build dependencies
@@ -46,10 +46,10 @@ LABEL Description="ciborg base image"
 
 # -- set APP environments
 # APP name
-ARG APP_NAME="tools"
+ARG APP_NAME="ciborg"
 ENV APP_NAME ${APP_NAME}
 # APP base path
-ARG APP_PATH="/opt/tools"
+ARG APP_PATH="/opt/ciborg"
 ENV APP_PATH ${APP_PATH}
 
 # -- set SYS environments
@@ -71,7 +71,10 @@ RUN apk update \
 COPY --from=buildcontainer ${APP_PATH} ${APP_PATH}/
 
 # adding test files
-COPY tests ${APP_PATH}/
+COPY tests ${APP_PATH}/tests/
+
+# switch to application dir
+WORKDIR ${APP_PATH}
 
 # use wrapper script as entrypoint
 ENTRYPOINT ["run.sh"]

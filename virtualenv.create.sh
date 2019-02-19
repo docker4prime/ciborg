@@ -124,7 +124,7 @@ printOk "\n--\n* virtualenv [${APP_PATH}] set up successfully\n--\n"
 
 # -- create tgz release
 RELEASE_FILENAME="${TMP_PATH}/${APP_NAME}.tgz"
-tar -czf ${RELEASE_FILENAME} -C $APP_NAME .
+tar -czf ${RELEASE_FILENAME} -C ${APP_PATH} .
 printOk "\n--\n* archiv ${RELEASE_FILENAME} created successfully\n--\n"
 
 # --upload tgz release

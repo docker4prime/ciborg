@@ -12,7 +12,12 @@ scriptParentDir=$(dirname $scriptFullDir)
 
 
 # activate virtualenv if found
-[[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate
+if [[ "${DEBUG:-false}" = "true" ]];then
+  [[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate
+else
+  [[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate >/dev/null
+fi
+
 
 # pass all other commands through
 exec "$@"

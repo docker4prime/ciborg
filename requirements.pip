@@ -4,29 +4,37 @@
 # -- ansible
 ansible
 
-# -- modules required for fact caching
-redis
 
-# -- modules required by aws cloud modules
-boto
-boto3
-
+# ===============
+# UTILITY MODULES
+# ===============
 # -- modules required for dig lookup
 dnspython
 
-# -- modules required by digital ocean cloud modules
-dopy
+# -- other modules that may be useful
+passlib>=1.6
 
+# -- modules required for fact caching
+#redis
+
+
+# =============
+# CLOUD MODULES
+# =============
 # -- modules required by docker cloud modules
 docker
 
+# -- modules required by digital ocean cloud modules
+#dopy
+
+# -- modules required by aws cloud modules
+#boto
+#boto3
+
 # -- modules required by proxmox api
-proxmoxer
+#proxmoxer
 
 # -- modules required by vmware cloud modules
-pyvmomi
-
-# -- other modules that may be useful
-passlib>=1.6
+#pyvmomi
 
 # eof

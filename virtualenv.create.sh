@@ -59,7 +59,7 @@ fi
 
 # -- install build pip requirements
 printTitle "UPDATING PIP REQUIREMENTS"
-PIP_PACKAGES="pip3 virtualenv"
+PIP_PACKAGES="pip virtualenv"
 if which sudo >/dev/null 2>&1;then
   sudo -E pip3 install --upgrade ${PIP_PACKAGES}
 else

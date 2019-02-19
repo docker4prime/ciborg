@@ -20,7 +20,7 @@ the following programs & tools are included and enabled by default:
 
 
 # usage
-you cann call the installed programs directly from the image
+you can call the installed programs directly from the image
 
 ### use ansible
 ```bash

@@ -1,0 +1,12 @@
+---
+- hosts: '{{ TARGET_HOSTS | default("build_targets") }}'
+  remote_user: root
+
+  # test tasks
+  tasks:
+    # debug dummy task
+    - name: 'debug.dummy.tasks'
+      debug: 'msg="DUMMY DEBUG TASK"'
+
+
+# eof

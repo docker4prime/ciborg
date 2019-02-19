@@ -1,6 +1,6 @@
 ---
 # playbook for setting up ansible virtualenv
-- name : "build.setenv"
+- name : "virtualenv.create"
   hosts: "{{ hosts | default('localhost') }}"
   gather_facts: no
 
@@ -35,5 +35,14 @@
         dest: "{{ APP_PATH }}/bin/run.sh"
         mode: 0755
 
+    - name: "build.setup.sys.symlinks"
+      file:
+        src:  "{{ item.src }}"
+        dest: "{{ item.dst }}"
+        state: "link"
+      with_items:
+        - src: "/usr/bin/python3"
+          dst: "/usr/bin/python"
+      ignore_errors: true
 
 # eof

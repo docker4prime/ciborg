@@ -18,6 +18,8 @@ else
   [[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate >/dev/null
 fi
 
+# update prompt
+export PS1=${PS1}'\u@\h:\w\$ '
 
 # pass all other commands through
 exec "$@"

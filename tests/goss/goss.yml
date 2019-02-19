@@ -20,7 +20,8 @@ command:
   curl --version:
     exit-status: 0
     stdout:
-    - curl 7.*OpenSSL
+    - curl 7.
+    - OpenSSL
   git --version:
     exit-status: 0
     stdout:

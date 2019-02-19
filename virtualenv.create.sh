@@ -61,9 +61,9 @@ fi
 printTitle "UPDATING PIP REQUIREMENTS"
 PIP_PACKAGES="pip3 virtualenv"
 if which sudo >/dev/null 2>&1;then
-  sudo -E pip install --upgrade ${PIP_PACKAGES}
+  sudo -E pip3 install --upgrade ${PIP_PACKAGES}
 else
-  pip install --upgrade ${PIP_PACKAGES}
+  pip3 install --upgrade ${PIP_PACKAGES}
 fi
 
 

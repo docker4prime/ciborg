@@ -70,6 +70,9 @@ RUN apk update \
 # get final application release
 COPY --from=buildcontainer ${APP_PATH} ${APP_PATH}/
 
+# adding test files
+COPY tests ${APP_PATH}/
+
 # use wrapper script as entrypoint
 ENTRYPOINT ["run.sh"]
 

@@ -54,7 +54,7 @@ ENV APP_PATH ${APP_PATH}
 
 # -- set SYS environments
 # APP core dependencies
-ARG DOCKER_OS_PACKAGES="bash curl git python3 tzdata"
+ARG DOCKER_OS_PACKAGES="bash curl git monit python3 tzdata"
 # SYS timezone
 ARG TZ="Europe/Vienna"
 ENV TZ ${TZ}

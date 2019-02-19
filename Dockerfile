@@ -71,7 +71,7 @@ RUN apk update \
 COPY --from=buildcontainer ${APP_PATH} ${APP_PATH}/
 
 # use wrapper script as entrypoint
-ENTRYPOINT ["${APP_PATH}/bin/run.sh"]
+ENTRYPOINT ${APP_PATH}/bin/run.sh
 
 
 # eof

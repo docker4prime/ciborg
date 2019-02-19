@@ -32,7 +32,7 @@
     - name: "build.add.ansible.run.script"
       template:
         src: "{{ playbook_dir }}/files/run.sh"
-        dest: "{{ BUILD_VENV }}/bin/run.sh"
+        dest: "{{ APP_PATH }}/bin/run.sh"
         mode: 0755
 
 

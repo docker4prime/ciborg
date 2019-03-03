@@ -1,0 +1,42 @@
+---
+# playbook for setting up ansible virtualenv
+- name : "ansible.requirement.tasks"
+  hosts: "{{ hosts | default('localhost') }}"
+  gather_facts: no
+
+  vars:
+    ansible_config_dir: '/etc/ansible'
+
+  tasks:
+
+    - name: "ansible.configs.setup.parent.dir"
+      file:
+        dest: "{{ ansible_config_dir }}"
+        state: directory
+
+    - name: "ansible.configs.copy"
+      copy:
+        src: "{{ playbook_dir }}/files/{{ item }}"
+        dest: "{{ ansible_config_dir }}/{{ item }}"
+      with_items:
+        - "ansible.cfg"
+        - "ansible.env"
+
+    - name: "deploy.run.script"
+      template:
+        src: "{{ playbook_dir }}/files/run.sh"
+        dest: "/usr/local/bin/run.sh"
+        mode: 0755
+
+    - name: "setup.sys.symlinks"
+      file:
+        src:  "{{ item.src }}"
+        dest: "{{ item.dst }}"
+        state: "link"
+      with_items:
+        - src: "/usr/bin/python3"
+          dst: "/usr/bin/python"
+      ignore_errors: true
+
+
+# eof

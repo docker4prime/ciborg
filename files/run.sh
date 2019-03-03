@@ -1,5 +1,5 @@
-#!/bin/bash
-# PURPOSE: simple wrapper script for activating ansible virtualenv
+#!/bin/sh
+# PURPOSE: simple wrapper script as docker entrypoint
 
 # -- auto: path variables
 scriptSelf=$0;
@@ -11,18 +11,67 @@ scriptParentDir=$(dirname $scriptFullDir)
 # -- /auto: path variables
 
 
-# activate virtualenv if found
-if [[ "${DEBUG:-false}" = "true" ]];then
-  [[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate
+# -- setup signal handling
+# initialisation tasks
+set -e
+pid=0
+pids=""
+
+# HUP/USR1 actions
+handler_usr1(){
+  echo "[i] --- TOP of USR HANDLER ---"
+  echo "[i] --- END of USR STATUS ---"
+}
+
+# TERM/QUIT/INT actions
+handler_term(){
+  echo "[i] --- TOP of SHUTDOWN HANDLER ---"
+  if [[ ${pid} -ne 0 ]]; then
+    for daemon_pid in ${pids}
+    do
+      pidname=$(pgrep -als0|grep "^${daemon_pid}"|awk '{print $2}')
+      echo "[>] killing process [${pidname}] with pid ${daemon_pid}"
+      kill -SIGTERM "${daemon_pid}"
+      wait "${daemon_pid}"
+    done
+  fi
+  echo "[i] --- END of SHUTDOWN HANDLER ---"
+  exit 143; # 128 + 15 -- SIGTERM
+}
+# register handlers
+trap 'kill ${!}; handler_usr1' SIGUSR1 SIGHUP
+trap 'kill ${!}; handler_term' SIGTERM SIGQUIT SIGINT
+
+# starting daemons
+start_daemon(){
+  # start in background
+  exec "$@" &
+  # get command pid
+  pid="$!"
+  pids="${pids} ${pid}"
+  # show info
+  echo "[>] command [${1}] started with pid ${pid}"
+  echo "[>] running command pids: ${pids}"
+}
+
+
+# starting services
+# echo "[>] starting services"
+
+
+# if ran with arguments
+if [ -n "${1}" ];then
+  # pass all commands through
+  exec "$@"
+# if ran without arguments (DEFAULT)
 else
-  [[ -f ${scriptFullDir}/activate ]] && . ${scriptFullDir}/activate >/dev/null
+  # wait forever
+  echo "[>] starting endless loop"
+  while true
+  do
+    tail -f /dev/null & wait ${!}
+  done
 fi
-
-# update prompt
-export PS1=${PS1}'\u@\h:\w\$ '
-
-# pass all other commands through
-exec "$@"
 
 
 # eof

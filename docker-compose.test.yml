@@ -1,4 +1,4 @@
 # PURPOSE: compose file for automated build tests
 sut:
   build: .
-  command: /opt/ciborg/tests/test.sh
+  command: /tests/test.sh

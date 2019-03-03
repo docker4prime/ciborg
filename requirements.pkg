@@ -1,20 +1,21 @@
 # PURPOSE: os package dependencies for this project
-# USAGE: apk update && apk add $(grep -vE "^(#.*|$)" requirements.pkg)
+# USAGE: apk add --no-cache $(grep -vE "^(#.*|$)" requirements.pkg)
 
 # minimal dependencies
 bash
 curl
+gettext
 git
 python3
+tzdata
+
+# required utilities
+openssh-client
 unzip
 
-# project build dependencies
-alpine-sdk
-libffi-dev
-openssl-dev
-python3-dev
-ncurses-dev
-sqlite-dev
-zlib-dev
+# application packages
+ansible
+monit
+
 
 # eof

@@ -3,40 +3,6 @@
 
 
 # ====================================
-# build application (temporary stage)
-# ====================================
-# base image to use
-FROM alpine AS buildcontainer
-
-# args: application settings
-ARG APP_NAME="ciborg"
-ARG APP_PATH="/opt/ciborg"
-ARG TMP_PATH="/opt/build"
-
-# args: core build dependencies
-ARG DOCKER_OS_PACKAGES="bash curl git"
-
-# envs: application build paths
-ENV APP_NAME ${APP_NAME}
-ENV APP_PATH ${APP_PATH}
-ENV TMP_PATH ${TMP_PATH}
-
-# copy build files
-COPY . ${TMP_PATH}/
-
-# switch to build dir
-WORKDIR ${TMP_PATH}
-
-# install core dependencies
-RUN apk update && apk add ${DOCKER_OS_PACKAGES}
-
-# create virtualenv
-RUN /bin/bash ${TMP_PATH}/virtualenv.create.sh
-
-
-
-
-# ====================================
 # build production image (final stage)
 # ====================================
 # base image
@@ -49,32 +15,39 @@ LABEL Description="ciborg base image"
 ARG APP_NAME="ciborg"
 ENV APP_NAME ${APP_NAME}
 # APP base path
-ARG APP_PATH="/opt/ciborg"
+ARG APP_PATH="/project"
 ENV APP_PATH ${APP_PATH}
 
 # -- set SYS environments
-# APP core dependencies
-ARG DOCKER_OS_PACKAGES="bash curl gettext git monit openssh-client python3 tzdata"
-# SYS timezone
+# prompt
+ENV PS1='[ciborg] \h:\w\$ '
+
+# timezone
 ARG TZ="Europe/Vienna"
 ENV TZ ${TZ}
-# SYS path
-ENV PATH ${PATH}:${APP_PATH}/bin
+
+# copy temporary build files
+COPY . /tmp/
+WORKDIR /tmp
 
 # setup application dependencies
-RUN apk update \
-  && apk add ${DOCKER_OS_PACKAGES} \
+RUN apk add --no-cache $(grep -vE "^(#.*|$)" requirements.pkg) \
   && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-  && echo $TZ > /etc/timezone
-
-# get final application release
-COPY --from=buildcontainer ${APP_PATH} ${APP_PATH}/
+  && echo $TZ > /etc/timezone \
+  && pip3 install --upgrade  --no-cache-dir pip \
+  && pip install --upgrade -r requirements.pip \
+  && export TARGET_DIR=/usr/local/bin \
+  && ansible-playbook -e "APP_PATH=${APP_PATH}" requirements.yaml \
+  && for external_tool in $(grep -vE "^(#.*|$)" requirements.tools); do bash tools.download.${external_tool};echo;sleep 2;done
 
 # adding test files
-COPY tests ${APP_PATH}/tests/
+COPY tests /tests/
 
 # switch to application dir
 WORKDIR ${APP_PATH}
+
+# define application dir as volume
+VOLUME ${APP_PATH}
 
 # use wrapper script as entrypoint
 ENTRYPOINT ["run.sh"]

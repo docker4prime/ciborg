@@ -30,7 +30,7 @@ fi
 
 
 # -- download & install to venv bin location
-[[ -n "${APP_PATH}" ]] && target_dir="${APP_PATH}/bin" || target_dir="."
+[[ -n "${TARGET_DIR}" ]] && target_dir="${TARGET_DIR}" || target_dir="."
 if [[ -n "${download_url}" ]];then
   echo "[${toolname}] DOWNLOADING from ${download_url} ..."
   tmppath=/tmp/download.zip

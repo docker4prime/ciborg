@@ -2,30 +2,22 @@
 
 # check file existence
 file:
-  /opt/ciborg/bin/activate:
+  /usr/local/bin/run.sh:
     exists: true
-    filetype: file
 
 
 # check command outputs
 command:
   ansible --version:
     exit-status: 0
-    stdout:
-    - ansible 2.
   bash --version:
     exit-status: 0
-    stdout:
-    - GNU bash, version 4.
   curl --version:
     exit-status: 0
-    stdout:
-    - curl 7.
-    - OpenSSL
+  goss --version:
+    exit-status: 0
   git --version:
     exit-status: 0
-    stdout:
-    - git version 2.
   monit -V:
     exit-status: 0
     stdout:

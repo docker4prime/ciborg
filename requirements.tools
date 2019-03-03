@@ -1,0 +1,11 @@
+# PURPOSE: external tools to download for this project (tools.download.TOOLNAME script must be provided)
+# USAGE: for external_tool in $(grep -vE "^(#.*|$)" requirements.tools); do bash tools.download.${external_tool};done
+
+# testing tools
+goss
+
+# provisioning tool
+#terraform
+
+
+# eof

@@ -1,9 +1,6 @@
 # PURPOSE: python module dependencies for this project
 # USAGE: pip install -r requirements.pip
 
-# -- ansible
-ansible
-
 
 # ===============
 # UTILITY MODULES

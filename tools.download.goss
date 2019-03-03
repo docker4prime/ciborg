@@ -28,7 +28,7 @@ if [[ -n "$download_url_suffix" ]];then
 fi
 
 # -- download & install to venv bin location
-[[ -n "${APP_PATH}" ]] && target_dir="${APP_PATH}/bin" || target_dir="."
+[[ -n "${TARGET_DIR}" ]] && target_dir="${TARGET_DIR}" || target_dir="."
 if [[ -n "${download_url}" ]];then
   echo "[${toolname}] DOWNLOADING from ${download_url} ..."
   curl -ksL "${download_url}" -o ${target_dir}/goss

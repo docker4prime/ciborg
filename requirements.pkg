@@ -15,6 +15,7 @@ unzip
 
 # application packages
 ansible
+apache2-utils
 monit
 
 

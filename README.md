@@ -5,6 +5,7 @@
 the following programs & tools are included and enabled by default:
 
 ### OS packages
+- apache2-utils
 - bash
 - curl
 - git
@@ -26,6 +27,12 @@ you can call the installed programs directly from the image
 ```bash
 docker run --rm -it docker4prime/ciborg ansible --version
 docker run --rm -it docker4prime/ciborg ansible-playbook --version
+```
+
+### use apache benchmark
+```bash
+docker run --rm -it docker4prime/ciborg ab -V
+docker run --rm -it docker4prime/ciborg ab -n 10 -c 2 https://google.com/ | grep "Time per request:.*across all concurrent requests" | sed "s/.*: *\([0-9]*\)\..*/\1/"
 ```
 
 ### use goss

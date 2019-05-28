@@ -1,6 +1,12 @@
 # PURPOSE: python module dependencies for this project
 # USAGE: pip install -r requirements.pip
 
+# ===============
+# MAIN MODULES
+# ===============
+# -- fix to latest ansible version withint major release
+ansible>=2.8,<2.9
+
 
 # ===============
 # UTILITY MODULES
